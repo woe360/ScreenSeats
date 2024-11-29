@@ -211,7 +211,7 @@ const Signup = () => {
      <Navbar />
      <div className="flex items-center justify-center min-h-[calc(100vh-80px)] px-4 sm:px-6 lg:px-8">
        <div className="max-w-md w-full bg-gray-100 border border-gray-300 py-8 rounded-xl px-5 space-y-6">
-         <h2 className="text-center text-3xl font-bold text-orange-500/50">
+         <h2 className="text-center text-3xl font-bold text-blue-500/50">
            Sign Up
          </h2>
          
@@ -226,7 +226,7 @@ const Signup = () => {
                type="button"
                className={`px-4 py-2 rounded-lg text-sm font-medium ${
                  formData.role === 'buyer'
-                   ? 'bg-orange-600/30 text-orange-700'
+                   ? 'bg-blue-600/30 text-blue-700'
                    : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
                }`}
                onClick={() => setFormData({...formData, role: 'buyer', company_name: ''})}
@@ -237,7 +237,7 @@ const Signup = () => {
                type="button"
                className={`px-4 py-2 rounded-lg text-sm font-medium ${
                  formData.role === 'seller'
-                   ? 'bg-orange-600/30 text-orange-700'
+                   ? 'bg-blue-600/30 text-blue-700'
                    : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
                }`}
                onClick={() => setFormData({...formData, role: 'seller'})}
@@ -249,7 +249,7 @@ const Signup = () => {
              <input
                type="text"
                required
-               className="appearance-none relative block w-full px-3 py-3 border border-slate-300 placeholder-slate-500 text-slate-900 rounded-lg focus:outline-none focus:ring-orange-500 focus:border-orange-500 focus:z-10 sm:text-sm"
+               className="appearance-none relative block w-full px-3 py-3 border border-slate-300 placeholder-slate-500 text-slate-900 rounded-lg focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm"
                placeholder="Username"
                value={formData.username}
                onChange={(e) => setFormData({...formData, username: e.target.value})}
@@ -257,7 +257,7 @@ const Signup = () => {
              <input
                type="text"
                required
-               className="appearance-none relative block w-full px-3 py-3 border border-slate-300 placeholder-slate-500 text-slate-900 rounded-lg focus:outline-none focus:ring-orange-500 focus:border-orange-500 focus:z-10 sm:text-sm"
+               className="appearance-none relative block w-full px-3 py-3 border border-slate-300 placeholder-slate-500 text-slate-900 rounded-lg focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm"
                placeholder="Full Name"
                value={formData.full_name}
                onChange={(e) => setFormData({...formData, full_name: e.target.value})}
@@ -266,7 +266,7 @@ const Signup = () => {
                <input
                  type="text"
                  required
-                 className="appearance-none relative block w-full px-3 py-3 border border-slate-300 placeholder-slate-500 text-slate-900 rounded-lg focus:outline-none focus:ring-orange-500 focus:border-orange-500 focus:z-10 sm:text-sm"
+                 className="appearance-none relative block w-full px-3 py-3 border border-slate-300 placeholder-slate-500 text-slate-900 rounded-lg focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm"
                  placeholder="Company Name"
                  value={formData.company_name}
                  onChange={(e) => setFormData({...formData, company_name: e.target.value})}
@@ -275,7 +275,7 @@ const Signup = () => {
              <input
                type="email"
                required
-               className="appearance-none relative block w-full px-3 py-3 border border-slate-300 placeholder-slate-500 text-slate-900 rounded-lg focus:outline-none focus:ring-orange-500 focus:border-orange-500 focus:z-10 sm:text-sm"
+               className="appearance-none relative block w-full px-3 py-3 border border-slate-300 placeholder-slate-500 text-slate-900 rounded-lg focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm"
                placeholder="Email address"
                value={formData.email}
                onChange={(e) => setFormData({...formData, email: e.target.value})}
@@ -283,7 +283,7 @@ const Signup = () => {
              <input
                type="password"
                required
-               className="appearance-none relative block w-full px-3 py-3 border border-slate-300 placeholder-slate-500 text-slate-900 rounded-lg focus:outline-none focus:ring-orange-500 focus:border-orange-500 focus:z-10 sm:text-sm"
+               className="appearance-none relative block w-full px-3 py-3 border border-slate-300 placeholder-slate-500 text-slate-900 rounded-lg focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm"
                placeholder="Password"
                value={formData.password}
                onChange={(e) => setFormData({...formData, password: e.target.value})}
@@ -291,7 +291,7 @@ const Signup = () => {
              <input
                type="password"
                required
-               className="appearance-none relative block w-full px-3 py-3 border border-slate-300 placeholder-slate-500 text-slate-900 rounded-lg focus:outline-none focus:ring-orange-500 focus:border-orange-500 focus:z-10 sm:text-sm"
+               className="appearance-none relative block w-full px-3 py-3 border border-slate-300 placeholder-slate-500 text-slate-900 rounded-lg focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm"
                placeholder="Confirm Password"
                value={formData.confirmPassword}
                onChange={(e) => setFormData({...formData, confirmPassword: e.target.value})}
@@ -301,7 +301,7 @@ const Signup = () => {
            <div>
              <button
                type="submit"
-               className="w-full flex justify-center py-3 px-4 text-sm font-medium rounded-lg text-orange-700 bg-orange-600/30 hover:bg-orange-600/40 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500"
+               className="w-full flex justify-center py-3 px-4 text-sm font-medium rounded-lg text-blue-700 bg-blue-600/30 hover:bg-blue-600/40 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
              >
                Create Account
              </button>
@@ -312,7 +312,7 @@ const Signup = () => {
              Already have an account?{' '}
              <span 
                onClick={() => navigate('/login')} 
-               className="font-medium text-orange-500 hover:text-orange-400 cursor-pointer"
+               className="font-medium text-blue-500 hover:text-blue-400 cursor-pointer"
              >
                Login
              </span>
