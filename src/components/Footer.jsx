@@ -1,12 +1,23 @@
 import React from 'react';
+import ScreenSeatsLogo from '../assets/ScreenSeats.svg';
+import { useNavigate } from 'react-router-dom';
 
 const Footer = () => {
+
+    const navigate = useNavigate();
+
   return (
     <footer className="bg-cream-100 pt-12 pb-8">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           <div className="space-y-4">
-            <h3 className="text-lg font-bold text-gray-800">ScreenSeats</h3>
+          <div onClick={() => navigate('/')} className="flex items-center cursor-pointer">
+            <img 
+              src={ScreenSeatsLogo} 
+              alt="ScreenSeats Logo" 
+              className="h-8 w-auto"
+            />
+          </div>
             <p className="text-gray-600">Your ultimate destination for movies and TV shows.</p>
           </div>
           
