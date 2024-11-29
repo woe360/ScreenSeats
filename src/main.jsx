@@ -15,6 +15,7 @@ import App from './App';
 // import EventsPage from './pages/events';
 import Events from './pages/Events';
 import Login from './pages/Login';
+import Signup from './pages/signup';
 import './index.css';
 
 const container = document.getElementById('root');
@@ -26,6 +27,7 @@ root.render(
   <Route path="/" element={<App />} />
   <Route path="/events" element={<Events />} />
   <Route path="/login" element={<Login />} />
+  <Route path="/signup" element={<Signup />} />
 </Routes>
     </BrowserRouter>
   </React.StrictMode>

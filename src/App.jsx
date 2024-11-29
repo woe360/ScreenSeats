@@ -19,11 +19,11 @@ const App = () => {
             Get the best seats for movies, shows, and events near you
           </p>
           <button 
-      onClick={() => navigate('/events')} 
-      className="px-8 py-3 bg-orange-600/30 text-orange-700 rounded-lg text-lg hover:bg-orange-600/40"
-    >
-      Browse Events
-    </button>
+            onClick={() => navigate('/events')} 
+            className="px-8 py-3 bg-orange-600/30 text-orange-700 rounded-lg text-lg hover:bg-orange-600/40"
+          >
+            Browse Events
+          </button>
         </section>
 
         <section className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-24">
