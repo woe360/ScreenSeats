@@ -20,7 +20,7 @@ const App = () => {
           </p>
           <button 
             onClick={() => navigate('/events')} 
-            className="px-8 py-3 bg-orange-600/30 text-orange-700 rounded-lg text-lg hover:bg-orange-600/40"
+            className="px-8 py-3 bg-blue-900/30 text-blue-800/80 rounded-lg text-lg hover:bg-blue-600/40"
           >
             Browse Events
           </button>
