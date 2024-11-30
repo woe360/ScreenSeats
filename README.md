@@ -1,2 +1,2 @@
 # ScreenSeats
-A film app
+A event management platform
