@@ -26,7 +26,7 @@ const Signup = () => {
 
    try {
      console.log('Sending registration data:', formData);
-     const response = await fetch('http://localhost:5000/api/auth/register', {
+     const response = await fetch('http://localhost:5000/api/users/register', {
        method: 'POST',
        headers: {
          'Content-Type': 'application/json',
@@ -53,7 +53,7 @@ const Signup = () => {
      <Navbar />
      <div className="flex items-center justify-center min-h-[calc(100vh-80px)] px-4 sm:px-6 lg:px-8">
        <div className="max-w-md w-full bg-gray-100 border border-gray-300 py-8 rounded-xl px-5 space-y-6">
-         <h2 className="text-center text-3xl font-bold text-blue-500/50">
+         <h2 className="text-center text-3xl font-bold text-gray-950">
            Sign Up
          </h2>
          
@@ -68,8 +68,8 @@ const Signup = () => {
                type="button"
                className={`px-4 py-2 rounded-lg text-sm font-medium ${
                  formData.role === 'buyer'
-                   ? 'bg-blue-600/30 text-blue-700'
-                   : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                   ? 'bg-gray-900 text-gray-50'
+                   : 'bg-gray-200 text-gray-900 hover:bg-gray-300'
                }`}
                onClick={() => setFormData({...formData, role: 'buyer', company_name: ''})}
              >
@@ -79,8 +79,8 @@ const Signup = () => {
                type="button"
                className={`px-4 py-2 rounded-lg text-sm font-medium ${
                  formData.role === 'seller'
-                   ? 'bg-blue-600/30 text-blue-700'
-                   : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                   ? 'bg-gray-900 text-gray-50'
+                   : 'bg-gray-200 text-gray-900 hover:bg-gray-300'
                }`}
                onClick={() => setFormData({...formData, role: 'seller'})}
              >
@@ -143,7 +143,7 @@ const Signup = () => {
            <div>
              <button
                type="submit"
-               className="w-full flex justify-center py-3 px-4 text-sm font-medium rounded-lg text-blue-700 bg-blue-600/30 hover:bg-blue-600/40 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+               className="w-full flex justify-center py-3 px-4 text-sm font-medium rounded-lg text-gray-50 bg-gray-950 hover:bg-gray-600/40 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
              >
                Create Account
              </button>

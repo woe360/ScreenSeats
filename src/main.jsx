@@ -11,6 +11,8 @@ import UserDashboard from './components/UserDashboard';
 import Sales from './components/dashboard/Sales';
 import Events from './components/dashboard/Events.tsx';  // Make sure the extension is included
 import './index.css';
+import ProjectInformation from './pages/ProjectInformation';
+
 
 const ProtectedRoute = ({ element, allowedRole }) => {
   const user = JSON.parse(localStorage.getItem('user'));
@@ -34,6 +36,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
         <Route path="/events" element={<EventsPage />} />
         <Route path="/events/:id" element={<EventDetails />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/project-info" element={<ProjectInformation />} />
         <Route path="/signup" element={<Register />} />
         <Route 
           path="/manager-dashboard" 

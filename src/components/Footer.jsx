@@ -1,57 +1,64 @@
 import React from 'react';
-import ScreenSeatsLogo from '../assets/ScreenSeats.svg';
 import { useNavigate } from 'react-router-dom';
+import ScreenSeatsLogo from '../assets/ScreenSeats.svg';
 
 const Footer = () => {
-
-    const navigate = useNavigate();
+  const navigate = useNavigate();
 
   return (
     <footer className="bg-cream-100 pt-12 pb-8">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           <div className="space-y-4">
-          <div onClick={() => navigate('/')} className="flex items-center cursor-pointer">
-            <img 
-              src={ScreenSeatsLogo} 
-              alt="ScreenSeats Logo" 
-              className="h-8 w-auto"
-            />
-          </div>
-            <p className="text-gray-600">Your ultimate destination for movies and TV shows.</p>
+            <div onClick={() => navigate('/')} className="flex items-center cursor-pointer">
+              <img 
+                src={ScreenSeatsLogo} 
+                alt="ScreenSeats Logo" 
+                className="h-8 w-auto"
+              />
+            </div>
+            <p className="text-gray-600">Your ultimate destination for event tickets.</p>
           </div>
           
           <div>
             <h4 className="font-semibold text-gray-800 mb-4">Quick Links</h4>
             <ul className="space-y-2 text-gray-600">
-              <li><a href="#" className="hover:text-gray-800">Home</a></li>
-              <li><a href="#" className="hover:text-gray-800">Movies</a></li>
-              <li><a href="#" className="hover:text-gray-800">TV Shows</a></li>
-              <li><a href="#" className="hover:text-gray-800">New Releases</a></li>
+              <li>
+                <button 
+                  onClick={() => navigate('/')} 
+                  className="hover:text-gray-800"
+                >
+                  Home
+                </button>
+              </li>
+              <li>
+                <button 
+                  onClick={() => navigate('/project-info')} 
+                  className="hover:text-gray-800"
+                >
+                  Project Information
+                </button>
+              </li>
             </ul>
           </div>
           
-          <div>
-            <h4 className="font-semibold text-gray-800 mb-4">Support</h4>
-            <ul className="space-y-2 text-gray-600">
-              <li><a href="#" className="hover:text-gray-800">FAQ</a></li>
-              <li><a href="#" className="hover:text-gray-800">Contact Us</a></li>
-              <li><a href="#" className="hover:text-gray-800">Help Center</a></li>
-            </ul>
+          <div className="col-span-2">
+            <h4 className="font-semibold text-gray-800 mb-4">Contact Us</h4>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-2 text-gray-600">
+              <a href="mailto:matas.vanagas@knf.stud.vu.lt" className="hover:text-gray-800">
+                matas.vanagas@knf.stud.vu.lt
+              </a>
+              <a href="mailto:jonas.andriuskevicius@knf.stud.vu.lt" className="hover:text-gray-800">
+                jonas.andriuskevicius@knf.stud.vu.lt
+              </a>
+              <a href="mailto:karolis.vaiginis@knf.stud.vu.lt" className="hover:text-gray-800">
+                karolis.vaiginis@knf.stud.vu.lt
+              </a>
+              <a href="mailto:lukas.malinauskas@knf.stud.vu.lt" className="hover:text-gray-800">
+                lukas.malinauskas@knf.stud.vu.lt
+              </a>
+            </div>
           </div>
-          
-          <div>
-            <h4 className="font-semibold text-gray-800 mb-4">Legal</h4>
-            <ul className="space-y-2 text-gray-600">
-              <li><a href="#" className="hover:text-gray-800">Privacy Policy</a></li>
-              <li><a href="#" className="hover:text-gray-800">Terms of Service</a></li>
-              <li><a href="#" className="hover:text-gray-800">Cookie Policy</a></li>
-            </ul>
-          </div>
-        </div>
-        
-        <div className="mt-8 pt-8 border-t border-gray-200">
-          <p className="text-center text-gray-600">© 2024 ScreenSeats. All rights reserved.</p>
         </div>
       </div>
     </footer>

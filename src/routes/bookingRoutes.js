@@ -1,6 +1,7 @@
 import express from 'express';
 import Booking from '../models/Booking.js';
 import { protect } from '../middleware/authMiddleware.js';
+import Event from '../models/Event.js';
 
 const router = express.Router();
 
@@ -55,12 +56,15 @@ router.get('/sales', protect, async (req, res) => {
     const { range } = req.query;
     const user = req.user;
     
-    // Get date range
+    // Define date range first
     const endDate = new Date();
     const startDate = new Date();
+    let interval = 'day';
+
     switch(range) {
       case '24h':
         startDate.setDate(startDate.getDate() - 1);
+        interval = 'hour';
         break;
       case '7d':
         startDate.setDate(startDate.getDate() - 7);
@@ -70,32 +74,89 @@ router.get('/sales', protect, async (req, res) => {
         break;
       case '12m':
         startDate.setMonth(startDate.getMonth() - 12);
+        interval = 'month';
         break;
     }
 
+    // Get seller's events and bookings
+    const sellerEvents = await Event.find({ sellerId: user._id });
+    const sellerEventIds = sellerEvents.map(event => event._id);
+
     const bookings = await Booking.find({
-      sellerId: user._id,
-      createdAt: { $gte: startDate, $lte: endDate }
+      eventId: { $in: sellerEventIds },
+      bookingDate: { $gte: startDate, $lte: endDate }
     })
     .populate('eventId')
-    .populate('userId', 'username fullName');
+    .populate('userId', 'username fullName')
+    .sort({ bookingDate: 1 });
 
-    // Format data for chart
-    const chartData = {
-      // Format your chart data here based on the range
-    };
+    // Generate labels and values based on the time range
+    let labels = [];
+    let values = [];
+
+    if (interval === 'hour') {
+      for (let i = 0; i < 24; i++) {
+        const date = new Date(startDate);
+        date.setHours(startDate.getHours() + i);
+        labels.push(date.toLocaleTimeString([], { hour: '2-digit' }));
+        
+        const hourlyTotal = bookings
+          .filter(booking => {
+            const bookingDate = new Date(booking.bookingDate);
+            return bookingDate.getHours() === date.getHours() &&
+                   bookingDate.getDate() === date.getDate();
+          })
+          .reduce((sum, booking) => sum + booking.price, 0);
+        
+        values.push(hourlyTotal);
+      }
+    } else if (interval === 'month') {
+      for (let i = 0; i < 12; i++) {
+        const date = new Date(startDate);
+        date.setMonth(startDate.getMonth() + i);
+        labels.push(date.toLocaleString('default', { month: 'short' }));
+        
+        const monthlyTotal = bookings
+          .filter(booking => {
+            const bookingDate = new Date(booking.bookingDate);
+            return bookingDate.getMonth() === date.getMonth();
+          })
+          .reduce((sum, booking) => sum + booking.price, 0);
+        
+        values.push(monthlyTotal);
+      }
+    } else {
+      const days = range === '7d' ? 7 : 30;
+      for (let i = 0; i < days; i++) {
+        const date = new Date(startDate);
+        date.setDate(startDate.getDate() + i);
+        labels.push(date.toLocaleDateString([], { month: 'short', day: 'numeric' }));
+        
+        const dailyTotal = bookings
+          .filter(booking => {
+            const bookingDate = new Date(booking.bookingDate);
+            return bookingDate.getDate() === date.getDate() &&
+                   bookingDate.getMonth() === date.getMonth();
+          })
+          .reduce((sum, booking) => sum + booking.price, 0);
+        
+        values.push(dailyTotal);
+      }
+    }
 
     res.json({
       sales: bookings.map(booking => ({
         _id: booking._id,
-        date: booking.createdAt,
+        date: booking.bookingDate,
         eventTitle: booking.eventId.title,
         customerName: booking.userId.fullName || booking.userId.username,
         amount: booking.price
       })),
-      chartData
+      labels,
+      values
     });
   } catch (error) {
+    console.error('Sales route error:', error);
     res.status(500).json({ message: error.message });
   }
 });

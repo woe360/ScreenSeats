@@ -31,18 +31,18 @@ const Login = () => {
       const data = await response.json();
       console.log('Login response:', data);
       
-      if (data.token) {
-        localStorage.setItem('user', JSON.stringify(data));
+      if (data.success) {
+        localStorage.setItem('user', JSON.stringify(data.user));
         localStorage.setItem('token', data.token);
         
         // Redirect based on user type
-        if (data.userType === 'seller') {
+        if (data.user.userType === 'seller') {
           navigate('/manager-dashboard');
         } else {
           navigate('/user-dashboard');
         }
       } else {
-        setError('Invalid credentials');
+        setError(data.message || 'Invalid credentials');
       }
     } catch (err) {
       console.error('Login error:', err);
@@ -56,13 +56,13 @@ const Login = () => {
       <div className="flex items-center justify-center min-h-[calc(100vh-80px)] px-4 sm:px-6 lg:px-8">
         <div className="max-w-md w-full bg-gray-100 border border-gray-300 py-10 rounded-xl px-5 space-y-8">
           <div>
-            <h2 className="text-center text-3xl font-bold text-orange-500/50">
+            <h2 className="text-center text-3xl font-bold text-grey-500/50">
               Log In
             </h2>
           </div>
           <form className="space-y-8" onSubmit={handleSubmit}>
             {error && (
-              <div className="text-red-500 text-center text-sm">
+              <div className="text-grey-950 text-center text-sm">
                 {error}
               </div>
             )}
@@ -71,7 +71,7 @@ const Login = () => {
                 <input
                   type="email"
                   required
-                  className="appearance-none relative block w-full px-3 py-3 border border-slate-300 placeholder-slate-500 text-slate-900 rounded-lg focus:outline-none focus:ring-orange-500 focus:border-orange-500 focus:z-10 sm:text-sm"
+                  className="appearance-none relative block w-full px-3 py-3 border border-slate-300 placeholder-slate-500 text-slate-900 rounded-lg focus:outline-none focus:ring-grey-500 focus:border-grey-500 focus:z-10 sm:text-sm"
                   placeholder="Email address"
                   value={formData.email}
                   onChange={(e) => setFormData({...formData, email: e.target.value})}
@@ -92,7 +92,7 @@ const Login = () => {
             <div>
               <button
                 type="submit"
-                className="w-full flex justify-center py-3 px-4 text-sm font-medium rounded-lg text-orange-700 bg-orange-600/30 hover:bg-orange-600/40 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500"
+                className="w-full flex justify-center py-3 px-4 text-sm font-medium rounded-lg text-gray-100 bg-gray-900 hover:bg-gray-600/40 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-grey-500"
               >
                 Continue
               </button>

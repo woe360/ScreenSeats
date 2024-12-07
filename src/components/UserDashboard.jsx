@@ -2,8 +2,9 @@
 import React, { useEffect, useState } from 'react';
 import { Download, LogOut } from 'lucide-react';
 import jsPDF from 'jspdf';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import logo from '../assets/ScreenSeats.svg';
+import Navbar from './Navbar';
 
 const UserDashboard = () => {
   const navigate = useNavigate();
@@ -101,37 +102,62 @@ const UserDashboard = () => {
   };
 
   return (
-    <div className="p-6 max-w-4xl mx-auto">
-      <div className="flex justify-between items-center mb-6">
-        <h1 className="text-2xl font-bold">My Tickets</h1>
-        <button 
-          onClick={handleLogout}
-          className="flex items-center gap-2 px-4 py-2 bg-red-600/40 text-red-500 rounded-md hover:bg-red-700/40 hover:text-white"
-        >
-          <LogOut className="h-4 w-4" />
-          Logout
-        </button>
-      </div>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        {bookings.map(booking => (
-          <div key={booking._id} className="bg-white rounded-lg shadow p-4">
-            <div className="flex justify-between items-start mb-2">
-              <h3 className="font-bold text-lg">{booking.eventId.title}</h3>
-              <button 
-                onClick={() => handleDownload(booking)}
-                className="p-2 hover:bg-gray-100 rounded-full"
-              >
-                <Download className="h-5 w-5 text-blue-600" />
-              </button>
-            </div>
-            <p className="text-gray-600">Date: {new Date(booking.eventId.date).toLocaleDateString()}</p>
-            <p className="text-gray-600">Venue: {booking.eventId.venueName}</p>
-            <p className="text-gray-600">Section: {booking.sectionType}</p>
-            <p className="text-gray-600">Seat: {booking.seatNumber}</p>
-            <p className="text-gray-600">Price: ${booking.price}</p>
-            <p className="text-sm text-gray-500 mt-2">Booked on: {new Date(booking.bookingDate).toLocaleDateString()}</p>
+    <div className="min-h-screen bg-gray-50">
+      <Navbar />
+      
+      <div className="max-w-4xl mx-auto px-6 py-8">
+        {bookings.filter(booking => booking.eventId).length === 0 ? (
+          <div className="text-center py-12">
+            <p className="text-gray-500 text-lg">No tickets found</p>
+            <Link to="/events" className="text-blue-600 hover:text-blue-700 mt-2 inline-block">
+              Browse events
+            </Link>
           </div>
-        ))}
+        ) : (
+          <div className="space-y-4">
+            {bookings.map(booking => {
+              if (!booking.eventId) return null;
+
+              return (
+                <div key={booking._id} className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden hover:border-gray-300 transition-all">
+                  <div className="flex">
+                    <div className="w-48 h-48">
+                      <img
+                        src={booking.eventId.posterUrl}
+                        alt={booking.eventId.title}
+                        className="w-full h-full object-cover"
+                      />
+                    </div>
+                    <div className="flex-1 p-6">
+                      <div className="flex justify-between items-start">
+                        <div>
+                          <h3 className="text-xl font-bold text-gray-900 mb-2">{booking.eventId.title}</h3>
+                          <p className="text-gray-600">{new Date(booking.eventId.date).toLocaleDateString()} • {booking.eventId.time}</p>
+                          <p className="text-gray-600 mt-1">{booking.eventId.venueName}</p>
+                          <div className="mt-4 space-y-1">
+                            <p className="text-gray-600">Section: {booking.sectionType}</p>
+                            <p className="text-gray-600">Seat: {booking.seatNumber}</p>
+                            <p className="text-gray-600">Price: ${booking.price}</p>
+                          </div>
+                        </div>
+                        <button 
+                          onClick={() => handleDownload(booking)}
+                          className="flex items-center gap-2 px-4 py-2 bg-gray-900 text-white rounded-md hover:bg-gray-800 transition-colors"
+                        >
+                          <Download className="h-4 w-4" />
+                          Download Ticket
+                        </button>
+                      </div>
+                      <p className="text-sm text-gray-500 mt-4">
+                        Booked on: {new Date(booking.bookingDate).toLocaleDateString()}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        )}
       </div>
     </div>
   );

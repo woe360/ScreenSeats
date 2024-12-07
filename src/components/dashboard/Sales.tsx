@@ -29,40 +29,66 @@ const Sales = () => {
   const [chartData, setChartData] = useState({
     labels: [],
     datasets: [{
-      label: 'Sales',
+      label: 'Amount ($)',
       data: [],
       borderColor: 'rgb(59, 130, 246)',
-      tension: 0.1
+      tension: 0.4,
+      fill: false,
+      pointBackgroundColor: 'rgb(59, 130, 246)',
+      pointBorderColor: '#fff',
+      pointBorderWidth: 2,
+      pointRadius: 4,
+      pointHoverRadius: 6
     }]
   });
+  const [events, setEvents] = useState([]);
 
   useEffect(() => {
     fetchSalesData();
+    fetchEvents();
   }, [timeRange]);
 
-  const fetchSalesData = async () => {
+const fetchSalesData = async () => {
+  try {
+    const response = await fetch(`http://localhost:5000/api/bookings/sales?range=${timeRange}`, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('token')}`,
+      },
+    });
+    const data = await response.json();
+    setSalesData(data.sales || []);
+    
+    setChartData({
+      labels: data.labels || [],
+      datasets: [{
+        label: 'Amount ($)',
+        data: data.values || [],
+        borderColor: 'rgb(59, 130, 246)',
+        tension: 0.4,
+        fill: false,
+        pointBackgroundColor: 'rgb(59, 130, 246)',
+        pointBorderColor: '#fff',
+        pointBorderWidth: 2,
+        pointRadius: 4,
+        pointHoverRadius: 6
+      }]
+    });
+  } catch (error) {
+    console.error('Error fetching sales data:', error);
+  }
+};
+
+  const fetchEvents = async () => {
     try {
-      const response = await fetch(`http://localhost:5000/api/bookings/sales?range=${timeRange}`, {
+      const response = await fetch('http://localhost:5000/api/events/seller', {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('token')}`,
         },
       });
       const data = await response.json();
-      setSalesData(data.sales || []);
-      
-      if (data.chartData?.labels && data.chartData?.values) {
-        setChartData({
-          labels: data.chartData.labels,
-          datasets: [{
-            label: 'Sales',
-            data: data.chartData.values,
-            borderColor: 'rgb(59, 130, 246)',
-            tension: 0.1
-          }]
-        });
-      }
+      setEvents(data || []);
     } catch (error) {
-      console.error('Error fetching sales data:', error);
+      console.error('Error fetching events:', error);
     }
   };
 
@@ -96,8 +122,8 @@ const Sales = () => {
         ))}
       </div>
 
-      {chartData.labels.length > 0 && (
-        <div className="bg-white p-6 rounded-lg shadow mb-6" style={{ height: '400px' }}>
+      <div className="flex gap-6 mb-6">
+        <div className="flex-[0.8] bg-white p-6 rounded-lg shadow" style={{ height: '400px' }}>
           <Line
             data={chartData}
             options={{
@@ -120,7 +146,27 @@ const Sales = () => {
             }}
           />
         </div>
-      )}
+
+        <div className="flex-[0.2] space-y-4">
+          <div className="bg-white p-6 rounded-lg shadow">
+            <h3 className="text-lg font-semibold text-gray-700 mb-2">Total Tickets Sold</h3>
+            <p className="text-3xl font-bold text-blue-600">
+              {salesData.length}
+            </p>
+          </div>
+
+          <div className="bg-white p-6 rounded-lg shadow">
+            <h3 className="text-lg font-semibold text-gray-700 mb-2">Available Tickets</h3>
+            <p className="text-3xl font-bold text-green-600">
+              {events.reduce((total, event) => {
+                const totalCapacity = event.seatSections.reduce((sum, section) => sum + section.capacity, 0);
+                const soldTickets = event.ticketsSold || 0;
+                return total + (totalCapacity - soldTickets);
+              }, 0)}
+            </p>
+          </div>
+        </div>
+      </div>
 
       <div className="bg-white rounded-lg shadow">
         <div className="p-4 border-b">

@@ -10,38 +10,103 @@ const router = express.Router();
 router.post('/login', async (req, res) => {
   try {
     const { email, password } = req.body;
+    console.log('Login attempt:', { email, passwordLength: password.length });
+
     const user = await User.findOne({ email });
+    console.log('User found:', user ? 'Yes' : 'No');
 
-    if (user && (await bcrypt.compare(password, user.password))) {
-      const token = jwt.sign(
-        { id: user._id },
-        process.env.JWT_SECRET,
-        { expiresIn: '30d' }
-      );
+    if (!user) {
+      return res.status(401).json({
+        success: false,
+        message: 'Invalid email or password'
+      });
+    }
 
-      res.json({
+    console.log('Stored password hash:', user.password);
+    const isMatch = await user.matchPassword(password);
+    console.log('Password match result:', isMatch);
+
+    if (!isMatch) {
+      return res.status(401).json({
+        success: false,
+        message: 'Invalid email or password'
+      });
+    }
+
+    const token = jwt.sign(
+      { id: user._id },
+      process.env.JWT_SECRET,
+      { expiresIn: '30d' }
+    );
+
+    res.json({
+      success: true,
+      user: {
         _id: user._id,
         username: user.username,
         email: user.email,
         userType: user.userType,
-        fullName: user.fullName,
-        token
-      });
-    } else {
-      res.status(401).json({ message: 'Invalid email or password' });
-    }
+        full_name: user.full_name
+      },
+      token
+    });
   } catch (error) {
-    res.status(400).json({ message: error.message });
+    console.error('Login error:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Server error during login'
+    });
   }
 });
 
-// Get user profile
-router.get('/profile', protect, async (req, res) => {
+// Register user
+router.post('/register', async (req, res) => {
   try {
-    const user = await User.findById(req.user._id).select('-password');
-    res.json(user);
+    const { username, email, password, full_name, company_name, role } = req.body;
+
+    // Check if user already exists
+    const existingUser = await User.findOne({ email });
+    if (existingUser) {
+      return res.status(400).json({
+        success: false,
+        message: 'User with this email already exists'
+      });
+    }
+
+    // Create new user (password will be hashed by pre-save middleware)
+    const user = await User.create({
+      username,
+      email,
+      password,
+      full_name,
+      company_name: role === 'seller' ? company_name : undefined,
+      userType: role || 'buyer'
+    });
+
+    const token = jwt.sign(
+      { id: user._id },
+      process.env.JWT_SECRET,
+      { expiresIn: '30d' }
+    );
+
+    res.status(201).json({
+      success: true,
+      user: {
+        _id: user._id,
+        username: user.username,
+        email: user.email,
+        full_name: user.full_name,
+        userType: user.userType,
+        ...(user.userType === 'seller' && { company_name: user.company_name })
+      },
+      token
+    });
   } catch (error) {
-    res.status(400).json({ message: error.message });
+    console.error('Registration error:', error);
+    res.status(500).json({
+      success: false,
+      message: error.message || 'Server error during registration'
+    });
   }
 });
 

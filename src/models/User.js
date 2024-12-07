@@ -38,15 +38,26 @@ const userSchema = new mongoose.Schema({
 // Hash password before saving
 userSchema.pre('save', async function(next) {
   if (!this.isModified('password')) {
-    next();
+    return next();
   }
   const salt = await bcrypt.genSalt(10);
   this.password = await bcrypt.hash(this.password, salt);
+  next();
 });
 
 // Method to compare passwords
 userSchema.methods.matchPassword = async function(enteredPassword) {
-  return await bcrypt.compare(enteredPassword, this.password);
+  try {
+    console.log('Password comparison:');
+    console.log('Entered password length:', enteredPassword.length);
+    console.log('Stored hash length:', this.password.length);
+    const isMatch = await bcrypt.compare(enteredPassword, this.password);
+    console.log('bcrypt.compare result:', isMatch);
+    return isMatch;
+  } catch (error) {
+    console.error('Password comparison error:', error);
+    return false;
+  }
 };
 
 export default mongoose.model('User', userSchema); 

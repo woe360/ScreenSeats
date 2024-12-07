@@ -67,20 +67,21 @@ const EventsPage = () => {
     );
   }
 
+  
   return (
-    <div className="min-h-screen bg-slate-50">
+    <div className="min-h-screen bg-white">
       <Navbar />
-      <div className="max-w-7xl mx-auto px-4 py-8">
-        <div className="mb-8">
-          <div className="relative mb-4">
+      <div className="max-w-7xl mx-auto px-4 py-12">
+        <div className="mb-12">
+          <div className="relative mb-6">
             <input
               type="text"
               placeholder="Search events..."
-              className="w-full pl-10 pr-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:border-blue-500"
+              className="w-full pl-10 pr-4 py-3 rounded-lg bg-white border border-gray-200 focus:border-gray-300 text-gray-900 placeholder-gray-500 shadow-sm"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
             />
-            <Search className="absolute left-3 top-2.5 text-gray-400" size={20} />
+            <Search className="absolute left-3 top-3.5 text-gray-400" size={20} />
           </div>
           <div className="flex gap-2">
             {categories.map(category => (
@@ -89,8 +90,8 @@ const EventsPage = () => {
                 onClick={() => setSelectedCategory(category)}
                 className={`px-4 py-2 rounded-lg capitalize ${
                   selectedCategory === category 
-                    ? 'bg-blue-600/30 text-blue-700' 
-                    : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
+                    ? 'bg-gray-900 text-white' 
+                    : 'bg-white text-gray-700 border border-gray-200 hover:border-gray-300 shadow-sm'
                 }`}
               >
                 {category}
@@ -99,30 +100,32 @@ const EventsPage = () => {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 sd:grid-cols-2 lg:grid-cols-4 gap-6">
           {filteredEvents.map((event) => (
             <div 
               key={event._id} 
-              className="bg-white rounded-lg shadow-sm border border-slate-100 overflow-hidden cursor-pointer transition hover:shadow-md"
+              className="bg-white rounded-lg border border-gray-200 overflow-hidden cursor-pointer transition-all hover:border-gray-300 shadow-sm hover:shadow-md"
               onClick={() => navigate(`/events/${event._id}`)}
             >
-              <img
-                src={event.posterUrl}
-                alt={event.title}
-                className="w-full h-48 object-cover"
-              />
+              <div className="aspect-[3/4]">
+                <img
+                  src={event.posterUrl}
+                  alt={event.title}
+                  className="w-full h-full object-cover"
+                />
+              </div>
               <div className="p-4">
                 <div className="flex justify-between items-start mb-2">
-                  <h3 className="text-lg font-semibold text-slate-800">{event.title}</h3>
-                  <span className="bg-blue-100 text-blue-700 px-2 py-1 rounded text-sm">
+                  <h3 className="text-lg font-semibold text-gray-900">{event.title}</h3>
+                  <span className="bg-gray-100 text-gray-700 px-2 py-1 rounded text-sm">
                     ${Math.min(...event.seatSections.map(s => s.price))} - ${Math.max(...event.seatSections.map(s => s.price))}
                   </span>
                 </div>
-                <p className="text-slate-600 text-sm mb-3">
+                <p className="text-gray-600 text-sm mb-3">
                   {new Date(event.date).toLocaleDateString()} • {event.time}
                 </p>
-                <p className="text-slate-600 mb-4">{event.venueName}</p>
-                <button className="w-full px-4 py-2 bg-blue-600/30 text-blue-700 rounded hover:bg-blue-600/40">
+                <p className="text-gray-600 mb-4">{event.venueName}</p>
+                <button className="w-full px-4 py-2 bg-gray-900 text-white rounded hover:bg-gray-800 transition-colors">
                   Book Tickets
                 </button>
               </div>

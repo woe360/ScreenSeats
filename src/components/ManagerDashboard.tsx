@@ -36,7 +36,7 @@ const ManagerDashboard = ({ children }) => {
                 to={item.path}
                 className={`flex items-center px-4 py-3 mb-2 rounded-lg transition-colors ${
                   location.pathname === item.path
-                    ? 'bg-blue-50 text-blue-600'
+                    ? 'bg-gray-950 text-gray-100'
                     : 'text-gray-600 hover:bg-gray-50'
                 }`}
               >

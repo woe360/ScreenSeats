@@ -9,8 +9,11 @@ const SeatingPlan = ({ event, onSeatSelect }) => {
 
   useEffect(() => {
     fetchBookedSeats();
+  }, [event]);
+
+  useEffect(() => {
     generateSeatingLayout();
-  }, [event, currentSectionIndex]);
+  }, [event, currentSectionIndex, bookedSeats]);
 
   const fetchBookedSeats = async () => {
     if (!event?._id) return;

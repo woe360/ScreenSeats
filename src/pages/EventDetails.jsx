@@ -42,6 +42,7 @@ const EventDetails = () => {
       setLoading(false);
     }
   };
+  
 
   const handleSeatSelect = (seat) => {
     setSelectedSeat(seat);

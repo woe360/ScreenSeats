@@ -67,4 +67,48 @@ router.post('/', protect, async (req, res) => {
   }
 });
 
+router.put('/:id', protect, async (req, res) => {
+  try {
+    const event = await Event.findById(req.params.id);
+    
+    if (!event) {
+      return res.status(404).json({ message: 'Event not found' });
+    }
+
+    if (event.sellerId.toString() !== req.user._id.toString()) {
+      return res.status(403).json({ message: 'Not authorized to update this event' });
+    }
+
+    const updatedEvent = await Event.findByIdAndUpdate(
+      req.params.id,
+      { ...req.body },
+      { new: true }
+    );
+
+    res.json(updatedEvent);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+
+
+  router.delete('/:id', protect, async (req, res) => {
+    try {
+      const event = await Event.findById(req.params.id);
+      
+      if (!event) {
+        return res.status(404).json({ message: 'Event not found' });
+      }
+  
+      if (event.sellerId.toString() !== req.user._id.toString()) {
+        return res.status(403).json({ message: 'Not authorized to delete this event' });
+      }
+  
+      await Event.findByIdAndDelete(req.params.id);
+      res.json({ message: 'Event deleted successfully' });
+    } catch (error) {
+      res.status(500).json({ message: error.message });
+    }
+  });
+});
+
 export default router; 
