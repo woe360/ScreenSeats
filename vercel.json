@@ -1,13 +1,15 @@
 {
   "version": 2,
+  "buildCommand": "npm run build",
+  "framework": "vite",
   "builds": [
     {
       "src": "src/server.js",
-      "use": "@vercel/node"
+      "use": "@vercel/node@18"
     },
     {
       "src": "package.json",
-      "use": "@vercel/static-build",
+      "use": "@vercel/static-build@18",
       "config": {
         "buildCommand": "npm run build",
         "outputDirectory": "dist",
